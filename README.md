@@ -70,15 +70,13 @@ Run these commands from your project's root directory in the terminal.
   This command builds the custom Docker image and runs the `airflow-init` service to set up Airflow's metadata database in PostgreSQL. This is a one-time setup step.
   ```
   docker compose up --build airflow-init
-````
-````
+```
+```
 - Start the Airflow Services:
   This command starts the Airflow webserver and scheduler in the background.
-
   ```
   docker compose up -d
 ````
-
 ## Using the Airflow UI to Run the Pipeline
 
 Once the services are running, you can use the Airflow web UI to monitor and trigger your pipeline.
@@ -110,6 +108,7 @@ After a successful DAG run, you can verify that the data was written to the data
 
 Do you also want me to **add markdown syntax highlighting** for the `Project Structure` tree (so it shows nicely in GitHub), or keep it exactly plain?
 ```
+
 
 
 
