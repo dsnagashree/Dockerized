@@ -71,19 +71,18 @@ Run these commands from your project's root directory in the terminal.
   ```
   docker compose up --build airflow-init
 ````
-
-* **Start the Airflow Services**:
+- Start the Airflow Services:
   This command starts the Airflow webserver and scheduler in the background.
 
-  ```sh
-  docker compose up -d
   ```
+  docker compose up -d
+  ````
 
 ## Using the Airflow UI to Run the Pipeline
 
 Once the services are running, you can use the Airflow web UI to monitor and trigger your pipeline.
 
-1. **Access the UI**: Open your web browser and go to `http://localhost:8080`.
+1. Access the UI: Open your web browser and go to `http://localhost:8080`.
 2. **Log in**: Use the default credentials:
 
    * **Username**: `airflow`
@@ -110,5 +109,6 @@ After a successful DAG run, you can verify that the data was written to the data
 
 Do you also want me to **add markdown syntax highlighting** for the `Project Structure` tree (so it shows nicely in GitHub), or keep it exactly plain?
 ```
+
 
 
