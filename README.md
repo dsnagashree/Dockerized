@@ -1,5 +1,4 @@
 
-```markdown
 # Dockerized Stock Market Data Pipeline with Airflow
 
 This project demonstrates a fully containerized data pipeline that automatically fetches stock market data from a public API, processes it, and stores it in a PostgreSQL database. The entire workflow is orchestrated using Apache Airflow.
@@ -111,3 +110,4 @@ After a successful DAG run, you can verify that the data was written to the data
 
 Do you also want me to **add markdown syntax highlighting** for the `Project Structure` tree (so it shows nicely in GitHub), or keep it exactly plain?
 ```
+
