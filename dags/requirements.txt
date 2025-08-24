@@ -1,0 +1,2 @@
+# stock_pipeline/dags/requirements.txt
+apache-airflow-providers-postgres

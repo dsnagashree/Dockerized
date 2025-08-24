@@ -1,0 +1,3 @@
+# data_pipeline/requirements.txt
+requests
+psycopg2-binary

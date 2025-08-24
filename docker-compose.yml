@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # The PostgreSQL database service with a healthcheck
+  postgres:
+    image: postgres:13
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # The Airflow initialization service
+  airflow-init:
+    build: .
+    container_name: airflow_init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
+      - AIRFLOW__WEBSERVER__SECRET_KEY=131dccd40047
+      - PYTHONPATH=/opt/airflow
+    command: bash -c "airflow db migrate && airflow users create --username airflow --password airflow --firstname Airflow --lastname Admin --role Admin --email airflow@example.com"
+
+  # The Airflow webserver service
+  airflow-webserver:
+    build: .
+    container_name: airflow_webserver
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=131dccd40047
+      - PYTHONPATH=/opt/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data_pipeline:/opt/airflow/data_pipeline
+    ports:
+      - "8080:8080"
+    command: webserver
+
+  # The Airflow scheduler service
+  airflow-scheduler:
+    build: .
+    container_name: airflow_scheduler
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=131dccd40047
+      - PYTHONPATH=/opt/airflow
+      - STOCK_API_KEY=${STOCK_API_KEY}
+      - STOCK_API_NAME=${STOCK_API_NAME}
+      - STOCK_SYMBOL=${STOCK_SYMBOL}
+      - DB_HOST=postgres
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data_pipeline:/opt/airflow/data_pipeline
+    command: scheduler
+
+volumes:
+  postgres_data:
