@@ -25,12 +25,12 @@ The project is organized into the following key directories and files:
 
 ```
 
-stock\_pipeline/
+stock_pipeline/
 ├── dags/
-│   └── stock\_dag.py             # Airflow DAG file with pipeline logic
-├── data\_pipeline/
-│   ├── **init**.py              # Marks the directory as a Python package
-│   ├── fetch\_data.py            # The core Python script for data fetching and storage
+│   └── stock_dag.py             # Airflow DAG file with pipeline logic
+├── data_pipeline/
+│   ├── __init__.py              # Marks the directory as a Python package
+│   ├── fetch_data.py            # The core Python script for data fetching and storage
 │   └── requirements.txt         # Python libraries for the data script
 ├── .env                         # Secure file for storing environment variables (sensitive info)
 ├── docker-compose.yml           # Defines and orchestrates all Docker services
@@ -102,6 +102,7 @@ After a successful DAG run, you can verify that the data was written to the data
    ```sql
    SELECT * FROM stock_data;
    ```
+
 
 
 
